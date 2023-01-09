@@ -1,0 +1,70 @@
+var maxNumberOfFamilies = function (n, reservedSeats) {
+  //2345 and 6789 and 4567 are the possible places to allocate 4 people. index correction -> 1234 for space1, 3456 for space2, 5678 for space3
+  const theater = {};
+  let groupsOfFour = 0;
+  for (let i = 1; i <= n; i++) {
+    theater["row" + i] = new Array(10).fill(0);
+  }
+  for (seat of reservedSeats) {
+    theater["row" + seat[0]][seat[1] - 1] = 1;
+  }
+  for (row in theater) {
+    let space1 = true;
+    let space2 = true;
+    let space3 = true;
+    // check space1
+    if (
+      theater[row][1] ||
+      theater[row][2] ||
+      theater[row][3] ||
+      theater[row][4]
+    ) {
+      space1 = false;
+    }
+    // check space2
+    if (
+      theater[row][3] ||
+      theater[row][4] ||
+      theater[row][5] ||
+      theater[row][6]
+    ) {
+      space2 = false;
+    }
+    // check space3
+    if (
+      theater[row][5] ||
+      theater[row][6] ||
+      theater[row][7] ||
+      theater[row][8]
+    ) {
+      space3 = false;
+    }
+    if (space1 && space3) {
+      groupsOfFour += 2;
+      continue;
+    }
+    if ((space2 && space1) || (space2 && space3)) {
+      groupsOfFour++;
+      continue;
+    }
+    if (space1) {
+      groupsOfFour++;
+    }
+    if (space2) {
+      groupsOfFour++;
+    }
+    if (space3) {
+      groupsOfFour++;
+    }
+  }
+  return groupsOfFour;
+};
+
+maxNumberOfFamilies(3, [
+  [1, 2],
+  [1, 3],
+  [1, 8],
+  [2, 6],
+  [3, 1],
+  [3, 10],
+]);
